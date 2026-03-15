@@ -4,11 +4,12 @@ import { FoundPetsController } from './found-pets.controller';
 import { EmailModule } from 'src/email/email.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FoundPet } from 'src/core/db/entities/foundpets.entity';
+import { LostPet } from 'src/core/db/entities/lostpets.entity';
 
 @Module({
   imports: [
     EmailModule,
-    TypeOrmModule.forFeature([FoundPet])
+    TypeOrmModule.forFeature([FoundPet, LostPet])
    ],
   providers: [FoundPetsService],
   controllers: [FoundPetsController]

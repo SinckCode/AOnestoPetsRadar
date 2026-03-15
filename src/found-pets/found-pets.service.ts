@@ -4,6 +4,7 @@ import { EmailOptions } from 'src/core/interfaces/mail-options.interfaces';
 import { EmailService } from 'src/email/email.service';
 import { generateFoundPetEmailTemplate } from './templates/found-pets-email.template';
 import { FoundPet } from 'src/core/db/entities/foundpets.entity';
+import { LostPet } from 'src/core/db/entities/lostpets.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -13,10 +14,12 @@ export class FoundPetsService {
     constructor(
         @InjectRepository(FoundPet)
         private readonly foundPetRepository: Repository<FoundPet>,
+        @InjectRepository(LostPet)
+        private readonly lostPetRepository: Repository<LostPet>,
         private readonly emailService: EmailService
     ) {}
 
-    async createFoundPet(foundPet : FoundPetCDto): Promise<Boolean>{
+    async createFoundPet(foundPet : FoundPetCDto){
 
         const newFoundPet = this.foundPetRepository.create({
           species: foundPet.species,
@@ -36,15 +39,40 @@ export class FoundPetsService {
           }
         });
 
-        await this.foundPetRepository.save(newFoundPet);
+                const savedFoundPet = await this.foundPetRepository.save(newFoundPet);
+
+                const nearbyLostPets = await this.lostPetRepository.query(
+                    `
+                        SELECT
+                            lp.*,
+                            ST_Distance(
+                                lp.location::geography,
+                                ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography
+                            ) AS distance
+                        FROM lost_pets lp
+                        WHERE lp.is_active = true
+                            AND ST_DWithin(
+                                lp.location::geography,
+                                ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
+                                $3
+                            )
+                        ORDER BY distance ASC
+                    `,
+                    [foundPet.lon, foundPet.lat, 500]
+                );
 
         const options : EmailOptions = {
             to: 'soyangeldavid1@gmail.com',
             subject: `Se encontró un ${foundPet.species}`,
             html: generateFoundPetEmailTemplate(foundPet)
         };
-        const result = await this.emailService.sendEmail(options);
-        return result;
+                const emailSent = await this.emailService.sendEmail(options);
+
+                return {
+                    foundPet: savedFoundPet,
+                    emailSent,
+                    nearbyLostPets
+                };
     }
 
 }

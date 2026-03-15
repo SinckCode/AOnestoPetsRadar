@@ -10,7 +10,10 @@ export class FoundPetsController {
     @Post()
     async createFoundPet(@Body() foundPet : FoundPetCDto) {
         const result = await this.FoundPetsService.createFoundPet(foundPet);
-        return "se creo una Mascota encontrada" + result;
+                return {
+                    message: 'Se creo una mascota encontrada',
+                    ...result
+                };
     }
 
 }
