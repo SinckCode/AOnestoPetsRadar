@@ -1,10 +1,10 @@
 import { LostPetCDto } from "src/core/interfaces/lost-pet.interfaces";
 import { generateMapboxImage } from "src/core/utils/utils";
 
-// CRON JOBS
-
 export const generateLostPetEmailTemplate = (pet: LostPetCDto): string => {
+
     const imageUrl = generateMapboxImage(pet.lat, pet.lon);
+
     const date = new Date().toLocaleDateString("es-MX", {
         year: "numeric",
         month: "long",
@@ -13,201 +13,223 @@ export const generateLostPetEmailTemplate = (pet: LostPetCDto): string => {
         minute: "2-digit"
     });
 
-    return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body style="margin:0;padding:0;background-color:#f0f2f5;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f2f5;padding:32px 0;">
-            <tr>
-                <td align="center">
-                    <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+return `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-                        <!-- Header -->
-                        <tr>
-                            <td style="background:linear-gradient(135deg,#F39C12,#F39C12cc);padding:32px 40px;">
-                                <table width="100%" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td>
-                                            <span style="display:inline-block;background-color:rgba(255,255,255,0.2);color:#ffffff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">
-                                                Mascota perdida
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding-top:16px;">
-                                            <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:700;line-height:1.3;">
-                                                Reporte registrado de ${pet.name}
-                                            </h1>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding-top:8px;">
-                                            <span style="display:inline-block;background-color:#ffffff;color:#F39C12;font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;">
-                                                ${pet.species}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+<body style="margin:0;padding:0;background:#f5f5f7;font-family:Segoe UI,Roboto,Arial,sans-serif;color:#111;">
 
-                        <!-- Description -->
-                        <tr>
-                            <td style="padding:32px 40px 0;">
-                                <h2 style="margin:0 0 12px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                    Descripcion
-                                </h2>
-                                <p style="margin:0;font-size:16px;color:#1f2937;line-height:1.6;">
-                                    ${pet.description}
-                                </p>
-                            </td>
-                        </tr>
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;background:#f5f5f7;">
+<tr>
+<td align="center">
 
-                        <!-- Pet Info -->
-                        <tr>
-                            <td style="padding:24px 40px 0;">
-                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fb;border-radius:12px;overflow:hidden;">
-                                    <tr>
-                                        <td style="padding:20px 24px;">
-                                            <h2 style="margin:0 0 16px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                                Datos de la mascota
-                                            </h2>
-                                            <table width="100%" cellpadding="0" cellspacing="0">
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Nombre</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.name}</span>
-                                                    </td>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Especie</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.species}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Raza</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.breed ?? "No especificada"}</span>
-                                                    </td>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Color</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.color}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Tamano</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.size}</span>
-                                                    </td>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Direccion</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.address}</span>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+<table width="600" cellpadding="0" cellspacing="0"
+style="background:#ffffff;border-radius:22px;overflow:hidden;border:1px solid #eaeaea;box-shadow:0 12px 40px rgba(0,0,0,0.06);">
 
-                        <!-- Owner Info -->
-                        <tr>
-                            <td style="padding:24px 40px 0;">
-                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#fffaf3;border-radius:12px;overflow:hidden;">
-                                    <tr>
-                                        <td style="padding:20px 24px;">
-                                            <h2 style="margin:0 0 16px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                                Datos del dueno
-                                            </h2>
-                                            <table width="100%" cellpadding="0" cellspacing="0">
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Nombre</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.owner_name}</span>
-                                                    </td>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Correo</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.owner_email}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Telefono</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.owner_phone}</span>
-                                                    </td>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Fecha de perdida</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.lost_date}</span>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+<!-- HEADER -->
 
-                        <!-- Location Info -->
-                        <tr>
-                            <td style="padding:24px 40px 0;">
-                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f9fb;border-radius:12px;overflow:hidden;">
-                                    <tr>
-                                        <td style="padding:20px 24px;">
-                                            <h2 style="margin:0 0 16px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                                Ubicacion
-                                            </h2>
-                                            <table width="100%" cellpadding="0" cellspacing="0">
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Latitud</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.lat}</span>
-                                                    </td>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Longitud</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.lon}</span>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+<tr>
+<td style="padding:26px 32px;border-bottom:1px solid #f0f0f0;">
 
-                        <!-- Map Image -->
-                        <tr>
-                            <td style="padding:24px 40px;">
-                                <img src="${imageUrl}" width="520" style="width:100%;border-radius:12px;display:block;" alt="Mapa de ubicacion"/>
-                            </td>
-                        </tr>
+<table width="100%">
+<tr>
 
-                        <!-- Footer -->
-                        <tr>
-                            <td style="padding:0 40px 32px;">
-                                <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e5e7eb;padding-top:20px;">
-                                    <tr>
-                                        <td>
-                                            <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.5;">
-                                                Reporte generado el ${date}
-                                            </p>
-                                            <p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">
-                                                Sistema PetRadar
-                                            </p>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+<td>
 
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </body>
-    </html>
-    `;
+<span style="display:inline-block;width:10px;height:10px;background:#ff5f57;border-radius:50%;margin-right:6px;"></span>
+<span style="display:inline-block;width:10px;height:10px;background:#ffbd2e;border-radius:50%;margin-right:6px;"></span>
+<span style="display:inline-block;width:10px;height:10px;background:#28c840;border-radius:50%;"></span>
+
+</td>
+
+<td align="right" style="font-size:12px;color:#999;letter-spacing:2px;font-weight:600;">
+PETRADAR SEARCH SYSTEM
+</td>
+
+</tr>
+</table>
+
+</td>
+</tr>
+
+<!-- ALERT BADGE -->
+
+<tr>
+<td style="padding:32px 40px 0;">
+
+<span style="display:inline-block;background:#fff5e8;border:1px solid #ffd9a8;color:#d97706;padding:8px 18px;border-radius:40px;font-size:12px;font-weight:600;letter-spacing:1px;">
+MASCOTA PERDIDA
+</span>
+
+</td>
+</tr>
+
+<!-- TITLE -->
+
+<tr>
+<td style="padding:18px 40px 0;">
+
+<h1 style="margin:0;font-size:36px;font-weight:800;line-height:1.2;color:#111;">
+${pet.name} fue reportado como perdido
+</h1>
+
+</td>
+</tr>
+
+<!-- TEXT -->
+
+<tr>
+<td style="padding:20px 40px 0;">
+
+<p style="margin:0;font-size:16px;line-height:1.6;color:#555;">
+Se ha registrado un reporte de mascota perdida en el sistema PetRadar.
+Si ves un animal con características similares, puedes ayudar a reunirlo con su dueño.
+</p>
+
+</td>
+</tr>
+
+<!-- PET INFO -->
+
+<tr>
+<td style="padding:34px 40px 0;">
+
+<table width="100%">
+<tr>
+
+<td width="33%" style="padding:10px;">
+<div style="background:#fafafa;border:1px solid #eeeeee;border-radius:14px;padding:16px;text-align:center;">
+<div style="font-size:11px;color:#888;letter-spacing:1px;margin-bottom:6px;">NOMBRE</div>
+<div style="font-size:18px;font-weight:700;color:#111;">${pet.name}</div>
+</div>
+</td>
+
+<td width="33%" style="padding:10px;">
+<div style="background:#fafafa;border:1px solid #eeeeee;border-radius:14px;padding:16px;text-align:center;">
+<div style="font-size:11px;color:#888;letter-spacing:1px;margin-bottom:6px;">ESPECIE</div>
+<div style="font-size:18px;font-weight:700;color:#111;">${pet.species}</div>
+</div>
+</td>
+
+<td width="33%" style="padding:10px;">
+<div style="background:#fafafa;border:1px solid #eeeeee;border-radius:14px;padding:16px;text-align:center;">
+<div style="font-size:11px;color:#888;letter-spacing:1px;margin-bottom:6px;">RAZA</div>
+<div style="font-size:18px;font-weight:700;color:#111;">${pet.breed ?? "No especificada"}</div>
+</div>
+</td>
+
+</tr>
+</table>
+
+</td>
+</tr>
+
+<!-- DESCRIPTION -->
+
+<tr>
+<td style="padding:26px 40px 0;">
+
+<div style="background:#fafafa;border:1px solid #eeeeee;border-radius:16px;padding:22px;">
+
+<div style="font-size:12px;color:#888;letter-spacing:2px;margin-bottom:10px;">
+DESCRIPCIÓN
+</div>
+
+<div style="font-size:15px;color:#222;line-height:1.6;">
+${pet.description}
+</div>
+
+</div>
+
+</td>
+</tr>
+
+<!-- OWNER -->
+
+<tr>
+<td style="padding:26px 40px 0;">
+
+<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:22px;">
+
+<div style="font-size:12px;color:#c2410c;letter-spacing:2px;margin-bottom:12px;">
+CONTACTO DEL DUEÑO
+</div>
+
+<div style="font-size:15px;font-weight:600;color:#111;">
+${pet.owner_name}
+</div>
+
+<div style="font-size:14px;color:#444;margin-top:4px;">
+${pet.owner_email}
+</div>
+
+<div style="font-size:14px;color:#444;margin-top:4px;">
+${pet.owner_phone}
+</div>
+
+</div>
+
+</td>
+</tr>
+
+<!-- LOCATION -->
+
+<tr>
+<td style="padding:26px 40px 0;">
+
+<div style="background:#fafafa;border:1px solid #eeeeee;border-radius:16px;padding:22px;">
+
+<div style="font-size:12px;color:#888;letter-spacing:2px;margin-bottom:12px;">
+UBICACIÓN DEL REPORTE
+</div>
+
+<div style="font-size:14px;color:#333;">
+${pet.address}
+</div>
+
+</div>
+
+</td>
+</tr>
+
+<!-- MAP -->
+
+<tr>
+<td style="padding:30px 40px 0;">
+
+<img src="${imageUrl}"
+style="width:100%;border-radius:16px;display:block;border:1px solid #eee;">
+
+</td>
+</tr>
+
+<!-- FOOTER -->
+
+<tr>
+<td style="padding:40px;text-align:center;border-top:1px solid #f0f0f0;margin-top:30px;">
+
+<div style="font-size:12px;color:#888;">
+Reporte generado el ${date}
+</div>
+
+<div style="font-size:12px;color:#bbb;margin-top:6px;">
+PetRadar System
+</div>
+
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+`;
 };

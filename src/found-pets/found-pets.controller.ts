@@ -2,14 +2,14 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { FoundPetsService } from './found-pets.service';
 import type { FoundPetCDto } from 'src/core/interfaces/found-pet.interfaces';
 
-@Controller('found-pets')
+@Controller('foundPets')
 export class FoundPetsController {
 
     constructor(private readonly FoundPetsService: FoundPetsService){}
 
     @Post()
-    async createFoundPet(@Body() found : FoundPetCDto) {
-        const result = await this.FoundPetsService.createFoundPet(found);
+    async createFoundPet(@Body() foundPet : FoundPetCDto) {
+        const result = await this.FoundPetsService.createFoundPet(foundPet);
         return "se creo una Mascota encontrada" + result;
     }
 

@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { LostPetsService } from './lost-pets.service';
 import { LostPetsController } from './lost-pets.controller';
 import { EmailModule } from 'src/email/email.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { LostPet } from 'src/core/db/entities/lostpets.entity';
 
 @Module({
-  imports: [EmailModule],
+  imports: [
+    EmailModule,
+    TypeOrmModule.forFeature([LostPet])
+ ],
   providers: [LostPetsService],
   controllers: [LostPetsController]
 })

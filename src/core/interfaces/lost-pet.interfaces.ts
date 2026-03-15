@@ -2,7 +2,7 @@ export interface LostPetCDto {
 
   name: string
   species: string
-  breed?: string
+  breed: string
 
   color: string
   size: string

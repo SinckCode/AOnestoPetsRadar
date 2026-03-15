@@ -1,9 +1,8 @@
 import { FoundPetCDto } from "src/core/interfaces/found-pet.interfaces";
 import { generateMapboxImage } from "src/core/utils/utils";
 
-// CRON JOBS
-
 export const generateFoundPetEmailTemplate = (pet: FoundPetCDto): string => {
+
     const imageUrl = generateMapboxImage(pet.lat, pet.lon);
 
     const date = new Date().toLocaleDateString("es-MX", {
@@ -15,246 +14,211 @@ export const generateFoundPetEmailTemplate = (pet: FoundPetCDto): string => {
     });
 
     return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-    <body style="margin:0;padding:0;background-color:#f0f2f5;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#000000;font-family:Segoe UI,Roboto,Arial,sans-serif;color:#ffffff;">
 
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f2f5;padding:32px 0;">
-            <tr>
-                <td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;background:#000000;">
+<tr>
+<td align="center">
 
-                    <table width="600" cellpadding="0" cellspacing="0"
-                        style="background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+<table width="600" cellpadding="0" cellspacing="0"
+style="background:#0a0a0a;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 80px rgba(0,0,0,0.8);">
 
-                        <!-- Header -->
+<!-- HEADER -->
 
-                        <tr>
-                            <td style="background:linear-gradient(135deg,#27AE60,#27AE60cc);padding:32px 40px;">
-                                <table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td style="padding:26px 32px;border-bottom:1px solid rgba(255,255,255,0.08);">
 
-                                    <tr>
-                                        <td>
-                                            <span style="display:inline-block;background-color:rgba(255,255,255,0.2);color:#ffffff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">
-                                                Mascota encontrada
-                                            </span>
-                                        </td>
-                                    </tr>
+<table width="100%">
+<tr>
 
-                                    <tr>
-                                        <td style="padding-top:16px;">
-                                            <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:700;line-height:1.3;">
-                                                Se encontró una mascota similar cerca de tu reporte
-                                            </h1>
-                                        </td>
-                                    </tr>
+<td>
 
-                                    <tr>
-                                        <td style="padding-top:8px;">
-                                            <span style="display:inline-block;background-color:#ffffff;color:#27AE60;font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;">
-                                                ${pet.species}
-                                            </span>
-                                        </td>
-                                    </tr>
+<span style="display:inline-block;width:10px;height:10px;background:#ffffff;border-radius:50%;margin-right:6px;"></span>
+<span style="display:inline-block;width:10px;height:10px;background:#ffffff55;border-radius:50%;margin-right:6px;"></span>
+<span style="display:inline-block;width:10px;height:10px;background:#ffffff22;border-radius:50%;"></span>
 
-                                </table>
-                            </td>
-                        </tr>
+</td>
 
-                        <!-- Description -->
+<td align="right" style="font-size:12px;color:#ffffffaa;letter-spacing:2px;font-weight:600;">
+PETRADAR ALERT SYSTEM
+</td>
 
-                        <tr>
-                            <td style="padding:32px 40px 0;">
-                                <h2 style="margin:0 0 12px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                    Descripcion del animal encontrado
-                                </h2>
+</tr>
+</table>
 
-                                <p style="margin:0;font-size:16px;color:#1f2937;line-height:1.6;">
-                                    ${pet.description}
-                                </p>
-                            </td>
-                        </tr>
+</td>
+</tr>
 
-                        <!-- Pet Info -->
+<!-- MATCH BADGE -->
 
-                        <tr>
-                            <td style="padding:24px 40px 0;">
+<tr>
+<td style="padding:30px 40px 0;">
 
-                                <table width="100%" cellpadding="0" cellspacing="0"
-                                    style="background-color:#f8f9fb;border-radius:12px;overflow:hidden;">
+<span style="display:inline-block;border:1px solid rgba(255,255,255,0.25);padding:8px 18px;border-radius:40px;font-size:12px;color:#ffffffcc;letter-spacing:1px;">
+● POSSIBLE MATCH DETECTED
+</span>
 
-                                    <tr>
-                                        <td style="padding:20px 24px;">
+</td>
+</tr>
 
-                                            <h2 style="margin:0 0 16px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                                Datos del animal encontrado
-                                            </h2>
+<!-- ENGINE STATUS -->
 
-                                            <table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td style="padding:18px 40px 0;font-size:12px;color:#ffffffaa;letter-spacing:2px;font-weight:600;">
+MATCH ENGINE · ACTIVE ALERT
+</td>
+</tr>
 
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Especie</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.species}</span>
-                                                    </td>
+<!-- MAIN TITLE -->
 
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Raza</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.breed ?? "No identificada"}</span>
-                                                    </td>
-                                                </tr>
+<tr>
+<td style="padding:14px 40px 0;">
 
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Color</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.color}</span>
-                                                    </td>
+<h1 style="margin:0;font-size:40px;font-weight:800;line-height:1.2;color:#ffffff;">
+podríamos haber<br>
+encontrado a tu mascota
+</h1>
 
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Tamano</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.size}</span>
-                                                    </td>
-                                                </tr>
+</td>
+</tr>
 
-                                            </table>
+<!-- DESCRIPTION -->
 
-                                        </td>
-                                    </tr>
+<tr>
+<td style="padding:20px 40px 0;">
 
-                                </table>
+<p style="margin:0;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.75);">
+Detectamos un reporte de mascota encontrada que podría coincidir con una búsqueda activa.
+Revisa cuidadosamente la información y valida los detalles antes de confirmar.
+</p>
 
-                            </td>
-                        </tr>
+</td>
+</tr>
 
-                        <!-- Finder Info -->
+<!-- PET DATA -->
 
-                        <tr>
-                            <td style="padding:24px 40px 0;">
+<tr>
+<td style="padding:34px 40px 0;">
 
-                                <table width="100%" cellpadding="0" cellspacing="0"
-                                    style="background-color:#f0fff4;border-radius:12px;overflow:hidden;">
+<table width="100%">
+<tr>
 
-                                    <tr>
-                                        <td style="padding:20px 24px;">
+<td width="33%" style="padding:12px;">
+<div style="border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px;text-align:center;">
+<div style="font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1px;margin-bottom:6px;">ESPECIE</div>
+<div style="font-size:18px;font-weight:700;color:#ffffff;">${pet.species}</div>
+</div>
+</td>
 
-                                            <h2 style="margin:0 0 16px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                                Datos de quien la encontro
-                                            </h2>
+<td width="33%" style="padding:12px;">
+<div style="border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px;text-align:center;">
+<div style="font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1px;margin-bottom:6px;">RAZA</div>
+<div style="font-size:18px;font-weight:700;color:#ffffff;">${pet.breed ?? "No identificada"}</div>
+</div>
+</td>
 
-                                            <table width="100%" cellpadding="0" cellspacing="0">
+<td width="33%" style="padding:12px;">
+<div style="border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px;text-align:center;">
+<div style="font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1px;margin-bottom:6px;">ESTADO</div>
+<div style="font-size:18px;font-weight:700;color:#ffffff;">Posible match</div>
+</div>
+</td>
 
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Nombre</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.finder_name}</span>
-                                                    </td>
+</tr>
+</table>
 
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Correo</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.finder_email}</span>
-                                                    </td>
-                                                </tr>
+</td>
+</tr>
 
-                                                <tr>
-                                                    <td colspan="2">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Telefono</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.finder_phone}</span>
-                                                    </td>
-                                                </tr>
+<!-- DESCRIPTION CARD -->
 
-                                            </table>
+<tr>
+<td style="padding:24px 40px 0;">
 
-                                        </td>
-                                    </tr>
+<div style="border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:22px;">
 
-                                </table>
+<div style="font-size:12px;color:rgba(255,255,255,0.55);letter-spacing:2px;margin-bottom:10px;">
+DESCRIPCIÓN DEL REPORTE
+</div>
 
-                            </td>
-                        </tr>
+<div style="font-size:15px;line-height:1.6;color:#ffffff;">
+${pet.description}
+</div>
 
-                        <!-- Location Info -->
+</div>
 
-                        <tr>
-                            <td style="padding:24px 40px 0;">
+</td>
+</tr>
 
-                                <table width="100%" cellpadding="0" cellspacing="0"
-                                    style="background-color:#f8f9fb;border-radius:12px;overflow:hidden;">
+<!-- MAP -->
 
-                                    <tr>
-                                        <td style="padding:20px 24px;">
+<tr>
+<td style="padding:30px 40px 0;">
 
-                                            <h2 style="margin:0 0 16px;font-size:14px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
-                                                Ubicacion donde fue encontrada
-                                            </h2>
+<img src="${imageUrl}"
+style="width:100%;border-radius:16px;display:block;border:1px solid rgba(255,255,255,0.08);">
 
-                                            <table width="100%" cellpadding="0" cellspacing="0">
+</td>
+</tr>
 
-                                                <tr>
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Latitud</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.lat}</span>
-                                                    </td>
+<!-- CONTACT -->
 
-                                                    <td width="50%" style="padding-bottom:8px;">
-                                                        <span style="font-size:12px;color:#9ca3af;font-weight:500;">Longitud</span><br/>
-                                                        <span style="font-size:15px;color:#1f2937;font-weight:600;">${pet.lon}</span>
-                                                    </td>
-                                                </tr>
+<tr>
+<td style="padding:30px 40px 0;">
 
-                                            </table>
+<div style="border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:22px;">
 
-                                        </td>
-                                    </tr>
+<div style="font-size:12px;color:rgba(255,255,255,0.55);letter-spacing:2px;margin-bottom:12px;">
+PERSONA QUE REPORTÓ
+</div>
 
-                                </table>
+<div style="font-size:15px;color:#ffffff;margin-bottom:4px;">
+${pet.finder_name}
+</div>
 
-                            </td>
-                        </tr>
+<div style="font-size:14px;color:rgba(255,255,255,0.75);">
+${pet.finder_email}
+</div>
 
-                        <!-- Map Image -->
+<div style="font-size:14px;color:rgba(255,255,255,0.75);margin-top:4px;">
+${pet.finder_phone}
+</div>
 
-                        <tr>
-                            <td style="padding:24px 40px;">
-                                <img src="${imageUrl}" width="520"
-                                style="width:100%;border-radius:12px;display:block;"
-                                alt="Mapa de ubicacion"/>
-                            </td>
-                        </tr>
+</div>
 
-                        <!-- Footer -->
+</td>
+</tr>
 
-                        <tr>
-                            <td style="padding:0 40px 32px;">
-                                <table width="100%" cellpadding="0" cellspacing="0"
-                                    style="border-top:1px solid #e5e7eb;padding-top:20px;">
+<!-- FOOTER -->
 
-                                    <tr>
-                                        <td>
-                                            <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.5;">
-                                                Reporte generado el ${date}
-                                            </p>
+<tr>
+<td style="padding:40px 40px 32px;text-align:center;border-top:1px solid rgba(255,255,255,0.08);margin-top:30px;">
 
-                                            <p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">
-                                                Sistema PetRadar
-                                            </p>
-                                        </td>
-                                    </tr>
+<div style="font-size:12px;color:rgba(255,255,255,0.55);">
+Reporte generado el ${date}
+</div>
 
-                                </table>
-                            </td>
-                        </tr>
+<div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:6px;">
+PetRadar System
+</div>
 
-                    </table>
+</td>
+</tr>
 
-                </td>
-            </tr>
-        </table>
+</table>
 
-    </body>
-    </html>
-    `;
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+`;
 };
